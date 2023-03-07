@@ -3,7 +3,7 @@
 #include<fstream>
 #include <string>
 using namespace std;
-
+//test komentarz
 void print(list<string>* myContainer, int n)
 {
     cout << "Database elements:\n\n";
