@@ -3,6 +3,7 @@
 #include<algorithm>
 #include<fstream>
 #include <string>
+#include <tgmath.h>
 using namespace std;
 
 struct elem {
@@ -43,12 +44,27 @@ int getNumOfArgs(string record)
             n++;
     return n;
 }
+double Info(list<elem> &listOfElems, int N)
+{
+    double info = 0.0, p = 0.0;
+    list<elem>::iterator it;
+    for(it = listOfElems.begin(); it!= listOfElems.end();it++)
+    {
+        p = it->n/(double)N;
+
+        info+=p*log2(p);
+        //cout<<it->n<<" "<<N<<" "<<p*log2(p)<<endl;
+    }
+    info*=(-1);
+    return info;
+}
 int main()
 {
+    system("CLS");
     fstream file;
-    string record="", a="";
+    string record="", a="",filename = "testowaTabDec.txt";//gielda.txt testowaTabDec.txt
     int n=1,N;
-    file.open("gielda.txt");
+    file.open(filename);
     getline(file, record);
     //licze ilosc atrybutow w tabeli decyzyjnej
     n = getNumOfArgs(record);
@@ -57,6 +73,8 @@ int main()
 
     list<string> database[n];//moja tabela wejsciowa
     list<elem> records[n];//tabela wszystkich mozliwych atrybutow wraz z iloscia poszczegolnych wystapien
+    file.close();
+    file.open(filename);
     while(true)
     {
         n=0;
@@ -102,6 +120,7 @@ int main()
             cout<<it->name<<" "<<it->n<<endl;
         cout<<"Ilosc mozliwych wariantow atrybutu "<<i+1<<": "<<records[i].size()<<endl;
     }
+    cout<<"Info(T) = "<<Info(records[N-1],database[N-1].size());
     file.close();
     return 0;
 }
