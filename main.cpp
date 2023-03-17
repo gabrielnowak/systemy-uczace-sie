@@ -11,9 +11,14 @@ struct elem {
         int n;//number of occurs
     };
 
-void print(list<string>* myContainer, int n)
+void printList(list<elem> &listOfElems, string name)
 {
-    cout << "Database elements:\n\n";
+    cout << "DECISIONS: of "<<name<<": \n\n";
+    list<elem>::iterator it;
+    for(it = listOfElems.begin(); it!= listOfElems.end();it++)
+    {
+        cout<<it->name<<" "<<it->n<<endl;
+    }
 
     // Iterating over myContainer elements
     // Each element is a list on its own
@@ -44,7 +49,7 @@ int getNumOfArgs(string record)
             n++;
     return n;
 }
-double Info(list<elem> &listOfElems, int N)
+double I(list<elem> &listOfElems, int N)
 {
     double info = 0.0, p = 0.0;
     list<elem>::iterator it;
@@ -56,6 +61,16 @@ double Info(list<elem> &listOfElems, int N)
         //cout<<it->n<<" "<<N<<" "<<p*log2(p)<<endl;
     }
     info*=(-1);
+    return info;
+}
+double Info(list<elem> &listOfDecisions,int N)
+{
+    double info = 0.0;
+    list<elem>::iterator it;
+    for(it = listOfDecisions.begin(); it!= listOfDecisions.end();it++)
+    {
+        info = info + it->n/(double)N*I(listOfDecisions,N);
+    }
     return info;
 }
 int main()
@@ -120,7 +135,55 @@ int main()
             cout<<it->name<<" "<<it->n<<endl;
         cout<<"Ilosc mozliwych wariantow atrybutu "<<i+1<<": "<<records[i].size()<<endl;
     }
-    cout<<"Info(T) = "<<Info(records[N-1],database[N-1].size());
+    //entropia
+    cout<<"I(T) = "<<I(records[N-1],database[N-1].size())<<endl;
+
+
+    //funkcja informacji
+
+    /*
+        opis struktur danych:
+        tablica list records[n] <elem>- zawiera w i-tej kolumnie listê wszystkich roznych wartosci i+1 atrybutu z jego nazw¹ i iloscia wystapien
+        tablica list database[n] <string> - zawiera tabele wejsciowa danych
+        lista decisions <elem> - zawiera tabele decyzji uzaleznionych od danej wartosci danego atrybutu z nazwa decyzji i iloscia wystapien
+    */
+    n = database[0].size();//n - ilosc rekordow w naszej tabeli
+    for(int i = 0; i < N-1;i++)
+    {
+        double info = 0.0;
+
+        list<elem>::iterator it3;
+        it3 = records[i].begin();
+
+        for(;it3!=records[i].end(); it3++)
+        {
+            list<elem> decisions;//gathering all options of decisions per one value of attribute
+            list<string>::iterator it1;
+            list<string>::iterator it2;
+            it1 = database[i].begin();
+            it2 = database[N-1].begin();
+            for(;it1 != database[i].end() && it2 != database[N-1].end() ;it1++,it2++)
+            {
+                if(*it1 == it3->name)
+                {
+                    auto r = contains(decisions, *it2);
+                    if(r != &(*decisions.end()))
+                    {
+                        (*r).n++;
+                    }
+                    else
+                    {
+                        elem e;
+                        e.name = *it2;
+                        e.n=1;
+                        decisions.push_front(e);
+                    }
+                }
+            }
+            info = info + (double)it3->n/(double)n*I(decisions,it3->n);
+        }
+        cout<<"Info(a"<<i+1<<",T) = "<<info<<endl;
+    }
     file.close();
     return 0;
 }
