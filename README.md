@@ -2,7 +2,7 @@
 
 # TODO
 
-stworzyc osobne funkcje 
+stworzyc biblioteke i kazda funkcjonalnosc jako osobne funkcje a w main tylko wywolywac
 
 I(T) - liczaca entropie
 Info(ai,T)
