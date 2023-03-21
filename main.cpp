@@ -79,6 +79,7 @@ int main()
     fstream file;
     string record="", a="",filename = "testowaTabDec.txt";//gielda.txt testowaTabDec.txt
     int n=1,N;
+    double Inf;
     file.open(filename);
     getline(file, record);
     //licze ilosc atrybutow w tabeli decyzyjnej
@@ -136,7 +137,8 @@ int main()
         cout<<"Ilosc mozliwych wariantow atrybutu "<<i+1<<": "<<records[i].size()<<endl;
     }
     //entropia
-    cout<<"I(T) = "<<I(records[N-1],database[N-1].size())<<endl;
+    Inf = I(records[N-1],database[N-1].size());
+    cout<<"I(T) = "<<Inf<<endl;
 
 
     //funkcja informacji
@@ -183,7 +185,14 @@ int main()
             info = info + (double)it3->n/(double)n*I(decisions,it3->n);
         }
         cout<<"Info(a"<<i+1<<",T) = "<<info<<endl;
+        cout<<"Gain(a"<<i+1<<",T) = "<<Inf-info<<endl;
     }
+
+    // gains
+
+    /*
+        Gain(X,T) = Info(T_ - Info(X,T), gdzie X - dany atrybut
+    */
     file.close();
     return 0;
 }
