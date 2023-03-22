@@ -77,9 +77,9 @@ int main()
 {
     system("CLS");
     fstream file;
-    string record="", a="",filename = "testowaTabDec.txt";//gielda.txt testowaTabDec.txt
-    int n=1,N;
-    double Inf;
+    string record="", a="",filename = "gielda.txt";//gielda.txt testowaTabDec.txt
+    int n=1,N, xDecisive;
+    double Inf,SplitInf, Gain, gainRatioMax = -1.0;
     file.open(filename);
     getline(file, record);
     //licze ilosc atrybutow w tabeli decyzyjnej
@@ -150,9 +150,11 @@ int main()
         lista decisions <elem> - zawiera tabele decyzji uzaleznionych od danej wartosci danego atrybutu z nazwa decyzji i iloscia wystapien
     */
     n = database[0].size();//n - ilosc rekordow w naszej tabeli
+
     for(int i = 0; i < N-1;i++)
     {
         double info = 0.0;
+
 
         list<elem>::iterator it3;
         it3 = records[i].begin();
@@ -185,14 +187,20 @@ int main()
             info = info + (double)it3->n/(double)n*I(decisions,it3->n);
         }
         cout<<"Info(a"<<i+1<<",T) = "<<info<<endl;
-        cout<<"Gain(a"<<i+1<<",T) = "<<Inf-info<<endl;
+        Gain = Inf-info;
+        cout<<"Gain(a"<<i+1<<",T) = "<<Gain<<endl;
+        SplitInf = I(records[i],database[i].size());
+        cout<<"SplitInfo(a"<<i+1<<",T) = "<<SplitInf<<endl;
+        cout<<"GainRatio(a"<<i+1<<",T) = "<<Gain/SplitInf<<endl;
+       if(Gain/SplitInf>gainRatioMax)
+       {
+           gainRatioMax = Gain/SplitInf;
+           xDecisive = i;
+        }
+
     }
-
-    // gains
-
-    /*
-        Gain(X,T) = Info(T_ - Info(X,T), gdzie X - dany atrybut
-    */
+    //tabela decyzyjna po podziale
+    cout<<"\n\n\nDzielimy wg. a"<<xDecisive+1<<endl;
     file.close();
     return 0;
 }
