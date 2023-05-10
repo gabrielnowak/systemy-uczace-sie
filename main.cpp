@@ -24,7 +24,6 @@ bool checkDecisiveArg(string decisiveArg, string record, int xDecisive)
         else if(x==xDecisive)
             arg+=record[i];
     }
-    //cout<<arg<<" x "<<decisiveArg<<" x "<<record<<endl;
     return arg==decisiveArg;
 }
 void printList(list<elem> &listOfElems, string name)
@@ -36,12 +35,7 @@ void printList(list<elem> &listOfElems, string name)
         cout<<it->name<<" "<<it->n<<endl;
     }
 
-    // Iterating over myContainer elements
-    // Each element is a list on its own
-    //for (int i = 0; i < n; i++)
-    //{
-    //    print(myContainer[i], i);
-    //}
+
 }
 
 elem * contains (list<elem> &listOfElems, string record)
@@ -74,7 +68,7 @@ double I(list<elem> &listOfElems, int N)
         p = it->n/(double)N;
 
         info+=p*log2(p);
-        //cout<<it->n<<" "<<N<<" "<<p*log2(p)<<endl;
+
     }
     info*=(-1);
     return info;
@@ -94,17 +88,13 @@ void makeDensity(int x, int attributesNamesLength)
 
     for(int i = 0; i<=x ; i++)
         cout<<"            ";
-    //for(int i=0;i<attributesNamesLength;i++)
-        //cout<<' ';
 
-    //cout<<"    ";
 }
 void podzial(list<elem> records[], list<string> database[], int xDecisive, int N, int density)//1 - lista elementow
 {
     int n=N,newxDecisive;
     double Inf,SplitInf, Gain, gainRatioMax = -1.0;
-    //if(density>0)
-        //makeDensity(density);
+
     cout<<"Atrybut a"<<xDecisive+1<<": "<<endl;
     //N = 4;
 
@@ -120,13 +110,10 @@ void podzial(list<elem> records[], list<string> database[], int xDecisive, int N
     int index;
     for(;it4!=records[xDecisive].end();it4++)
     {
-        //if(it4==records[xDecisive].begin())
-            //cout<<it4->name<<" -> ";
-        //else
-        //{
+
             makeDensity(density, it4->name.length());
             cout<<it4->name<<" -> ";
-        //}
+
         gainRatioMax = -1;
         for(int i=0;i<N;i++)
         {
@@ -136,7 +123,7 @@ void podzial(list<elem> records[], list<string> database[], int xDecisive, int N
         indexes.clear();
         index=0;
         it1 = database[xDecisive].begin();
-        //cout<<"t: "<<*(database[N-1].begin())<<endl;
+
         for(;it1!=database[xDecisive].end();it1++)//zapisuje indeksy tych rekordow, ktore mnie interesuja
         {
 
@@ -158,12 +145,12 @@ void podzial(list<elem> records[], list<string> database[], int xDecisive, int N
                 if(find(indexes.begin(),indexes.end(),index)!=indexes.end())
                 {
                     newDatabase[i].push_front(*it1);
-                    //cout<<*it1<<" ";
+
                     auto r = contains(newRecords[i],*it1);
                     if(r != &(*newRecords[i].end()))
                     {
                         (*r).n++;
-                        //cout<<"t";
+
                     }
                     else
                     {
@@ -182,27 +169,9 @@ void podzial(list<elem> records[], list<string> database[], int xDecisive, int N
             //--------------------------------------------------------------------
             //licze wszystko w newdatabase co wczesniej w database
 
-
-            for(int i = 0; i<N;i++)
-            {
-                //cout<<"Atrybut "<<i+1<<": "<<endl;
-                if(i==xDecisive)
-                {
-                    //cout<<it4->name<<" "<<it4->n<<endl;
-                    //cout<<"Ilosc mozliwych atrybutu "<<xDecisive+1<<": "<<1<<endl;
-                }
-                else
-                {
-                    //list<elem>::iterator it;
-                   // for(it = newRecords[i].begin(); it!= newRecords[i].end();it++)
-                        //cout<<it->name<<" "<<it->n<<endl;
-
-                    //cout<<"Ilosc mozliwych wariantow atrybutu "<<i+1<<": "<<newRecords[i].size()<<endl;
-                }
-            }
                 //entropia
             Inf = I(newRecords[N-1],newDatabase[N-1].size());
-                //cout<<"I(T) = "<<Inf<<endl;
+
 
             n = newDatabase[0].size();//n - ilosc rekordow w naszej tabeli
 
@@ -241,12 +210,11 @@ void podzial(list<elem> records[], list<string> database[], int xDecisive, int N
                     }
                     info = info + (double)it3->n/(double)n*I(decisions,it3->n);
                 }
-                //cout<<"Info(a"<<i+1<<",T) = "<<info<<endl;
+
                 Gain = Inf-info;
-                //cout<<"Gain(a"<<i+1<<",T) = "<<Gain<<endl;
+
                 SplitInf = I(newRecords[i],newDatabase[i].size());
-                //cout<<"SplitInfo(a"<<i+1<<",T) = "<<SplitInf<<endl;
-                //cout<<"GainRatio(a"<<i+1<<",T) = "<<Gain/SplitInf<<endl;
+
             if(Gain/SplitInf>gainRatioMax)
             {
                 gainRatioMax = Gain/SplitInf;
@@ -254,22 +222,19 @@ void podzial(list<elem> records[], list<string> database[], int xDecisive, int N
             }
 
         }
-        //cout<<"GainRatioMax: "<<gainRatioMax<<endl;
+
         if(gainRatioMax>0)
         {
-            //cout<<endl;
+
             podzial(newRecords,newDatabase,newxDecisive,N,density+1);
         }
         else
         {
-            //makeDensity(density);
+
             cout<<"DECYZJA "<<*(newDatabase[N-1].begin())<<endl;
         }
 
-        //delete newDatabase;
-        //delete &it1;
-        //delete &indexes;
-        //cout<<"---------------------"<<endl;
+
         }
 
 
@@ -280,7 +245,7 @@ int main()
 {
     system("CLS");
     fstream file;
-    string record="", a="",filename = "car.data";//gielda.txt testowaTabDec.txt
+    string record="", a="",filename = "testowaTabDec.txt";//gielda.txt testowaTabDec.txt
     int n=1, xDecisive;
     double Inf,SplitInf, Gain, gainRatioMax = -1.0;
     file.open(filename);
@@ -309,8 +274,6 @@ int main()
             }
             if(record[i]==',' || i==record.length()-1)
             {
-                //if(i==record.length()-1)
-                    //cout<<"TEST "<<a<<endl;
                 auto r = contains( records[n], a);
                 if(r != &(*records[n].end()))
                 {
@@ -407,50 +370,6 @@ int main()
     //tabela decyzyjna po podziale
 
     podzial(records, database, xDecisive, N, 0);
-    /*
-    cout<<"\n\n\nAtrybut a"<<xDecisive+1<<": "<<endl;
-    //N = 4;
-    list<string> newDatabase[N];
-    list<elem>::iterator it;
-    list<string>::iterator it1;
-    it = records[xDecisive].begin();
-
-    list<int> indexes;
-    int index=0;
-    for(;it!=records[xDecisive].end();it++)
-    {
-        index=0;
-        indexes.clear();
-        it1 = database[xDecisive].begin();
-        for(;it1!=database[xDecisive].end();it1++)//zapisuje indeksy tych rekordow, ktore mnie interesuja
-        {
-            if(checkDecisiveArg(it->name,*it1,xDecisive))
-            {
-                indexes.push_front(index);
-            }
-            index++;
-        }
-
-        for(int i = 0;i < N;i++)//tworze nowa baze zawierajaca wylacznie rekordy ktore mnie interesuja
-        {
-            index = 0;
-
-            it1 = database[i].begin();
-            for(;it1!=database[i].end();it1++)
-            {
-                if(find(indexes.begin(),indexes.end(),index)!=indexes.end())
-                {
-                    newDatabase[i].push_front(*it1);
-                    cout<<*it1<<" ";
-                }
-                index++;
-            }
-            cout<<endl;
-
-        }
-        cout<<"---------------------"<<endl;
-    }
-    */
 
     return 0;
 }

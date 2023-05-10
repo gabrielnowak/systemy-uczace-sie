@@ -1,0 +1,10 @@
+Atrybut a3:
+            1 -> Atrybut a1:
+                        2 -> DECYZJA 2
+                        0 -> DECYZJA 1
+            0 -> Atrybut a4:
+                        1 -> Atrybut a1:
+                                    2 -> DECYZJA 1
+                                    1 -> DECYZJA 0
+                                    0 -> DECYZJA 0
+                        0 -> DECYZJA 1
